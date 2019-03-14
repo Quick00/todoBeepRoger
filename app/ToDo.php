@@ -16,7 +16,7 @@ class ToDo extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'title', 'info', 'completed', 'editing', 'editinginfo'
+        'title', 'info', 'completed', 'image', 'editing', 'editinginfo',
     ];
 
     /**

@@ -1781,14 +1781,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       inputtitle: '',
+      Hidden: false,
       inputinfo: '',
+      image: '',
       editing: false,
       editinginfo: false,
-      completed: false,
+      completed: 0,
       todos: []
     };
   },
@@ -1805,6 +1816,16 @@ __webpack_require__.r(__webpack_exports__);
       this.beforeEditCache = todo.title;
       todo.editing = true;
     },
+    AddToDoScreen: function AddToDoScreen(todo) {
+      if (this.Hidden === true) {
+        this.Hidden = false;
+      } else {
+        this.Hidden = true;
+      }
+    },
+    canceladd: function canceladd(todo) {
+      this.Hidden = false;
+    },
     AddToDo: function AddToDo(todo) {
       var _this = this;
 
@@ -1813,13 +1834,26 @@ __webpack_require__.r(__webpack_exports__);
         info: this.inputinfo,
         completed: this.completed,
         editing: this.editing,
-        editinginfo: this.editinginfo
+        editinginfo: this.editinginfo,
+        image: this.image
       });
       axios.get('./api/todo').then(function (response) {
         return _this.todos = response.data;
       });
       this.inputtitle = '';
       this.inputinfo = '';
+      this.Hidden = false;
+    },
+    OnImageChange: function OnImageChange(e) {
+      var _this2 = this;
+
+      var fileReader = new FileReader();
+      fileReader.readAsDataURL(e.target.files[0]);
+
+      fileReader.onload = function (e) {
+        _this2.image = e.target.result;
+        console.log(e);
+      };
     },
     edittodoinfo: function edittodoinfo(todo) {
       this.beforeEditCacheinfo = todo.info;
@@ -1854,19 +1888,32 @@ __webpack_require__.r(__webpack_exports__);
       todo.editinginfo = false;
     },
     DeleteToDo: function DeleteToDo(todo) {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.delete('./api/todo/' + todo.id);
       axios.get('./api/todo').then(function (response) {
-        return _this2.todos = response.data;
+        return _this3.todos = response.data;
       });
+    },
+    CompletedData: function CompletedData(todo) {
+      if (todo.completed == 0) {
+        todo.completed = 1;
+        axios.put('./api/todo/' + todo.id, {
+          completed: todo.completed
+        });
+      } else {
+        todo.completed = 0;
+        axios.put('./api/todo/' + todo.id, {
+          completed: todo.completed
+        });
+      }
     }
   },
   created: function created() {
-    var _this3 = this;
+    var _this4 = this;
 
     axios.get('./api/todo').then(function (response) {
-      return _this3.todos = response.data;
+      return _this4.todos = response.data;
     });
   }
 });
@@ -6330,7 +6377,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 exports.push([module.i, "@import url(https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900);", ""]);
 
 // module
-exports.push([module.i, "\n\n", ""]);
+exports.push([module.i, "\nhtml{\n    font-family: Catamaran;\n    margin: 0;\n    padding: 0;\n    height: 100vh;\n    width: 100vw;\n    background-color: rgb(239, 50, 50)\n}\nli{\n    list-style-type: none;\n    text-decoration: none;\n}\n.addtodo{\n    cursor: pointer;\n    float: right;\n    -webkit-transform: translate(-50%,-50%);\n            transform: translate(-50%,-50%);\n    z-index: 1;\n    color: white;\n    margin-top: 40px;\n    margin-right: 10px;\n    font-size: 25px;\n}\n.boxes{\n    width: 600px;\n    height: 800px;\n    border: 0.5px solid transparent;\n    border-radius: 10px;\n    background-color: rgb(73,73,73);\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    -webkit-transform: translate(-50%,-50%);\n            transform: translate(-50%,-50%);\n    overflow-y: auto;\n    z-index: 0;\n}\n::-webkit-scrollbar{\n    width: 50px;\n    color: black;\n}\n.bigtext{\n    color: rgb(239, 50, 50);\n    float: left;\n    margin-left: 10px;\n    font-size: 25px;\n}\n.doosjes{\n    position: relative;\n    width: 500px;\n    height: 150px;\n    border-radius: 10px;\n    float: left;\n    overflow: hidden;\n    border: 1px solid black;\n    margin-bottom: 10px;\n}\n.checkbox{\n    width: 1.3em;\n    height: 1.3em;\n    background-color: transparent;\n    border-radius: 50%;\n    vertical-align: middle;\n    border: 1px solid rgb(239,50,50);\n    -webkit-appearance: none;\n    outline: none;\n    cursor: pointer;\n    margin-top: 20px;\n}\n.checkbox:checked {\n    background-color: rgb(239,50,50);\n}\n.deletebtn{\n    position: absolute;\n    cursor: pointer;\n    font-size: 40px;\n    float: right;\n    color: rgb(239,50,50);\n    top: 2%;\n    right: 5%;\n}\n.completed{\n    text-decoration: line-through;\n    color: rgb(239,50,50) !important;\n}\ndiv{\n    display: block;\n}\n.inputs{\n    position: absolute;\n    width: 400px;\n    height: 250px;\n    background-color: rgb(95,95,95);\n    border-radius: 10px;\n    top: 50%;\n    left: 50%;\n    -webkit-transform: translate(-50%,-50%);\n            transform: translate(-50%,-50%);\n    z-index: 1;\n}\n.inputtitle{\n    position: absolute;\n    top: 10%;\n    left: 50%;\n    -webkit-transform: translate(-50%,-50%);\n            transform: translate(-50%,-50%);\n    background-color: white;\n    padding: 10px;\n    border: none;\n    outline: none;\n    color: black;\n    margin: 3px;\n    font-size: 15px;\n    border-radius: 10px;\n}\n.inputinfo{\n    position: absolute;\n    top: 30%;\n    left: 50%;\n    -webkit-transform: translate(-50%,-50%);\n            transform: translate(-50%,-50%);\n    background-color: white;\n    padding: 10px;\n    border: none;\n    outline: none;\n    color: black;\n    margin: 3px;\n    font-size: 15px;\n    border-radius: 10px;\n}\n.inputimage{\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    -webkit-transform: translate(-50%,-50%);\n            transform: translate(-50%,-50%);\n    background-color: white;\n    padding: 10px;\n    border: none;\n    outline: none;\n    color: black;\n    margin: 3px;\n    font-size: 15px;\n    border-radius: 10px;\n}\n.submit{\n    position: absolute;\n    cursor: pointer;\n    bottom: 5%;\n    left: 50%;\n    -webkit-transform: translate(-50%,-50%);\n            transform: translate(-50%,-50%);\n    background-color: white;\n    padding: 10px;\n    border: none;\n    outline: none;\n    color: black;\n    margin: 3px;\n    font-size: 15px;\n    border-radius: 10px;\n}\n.title{\n    position: absolute;\n    margin-top: 2px;\n    text-align: center;\n    font-size: 20px;\n    top: 20%;\n    left: 50%;\n    -webkit-transform: translate(-50%,-50%);\n            transform: translate(-50%,-50%);\n    color: white;\n}\n.titleedit{\n    position: relative;\n    text-align: center;\n    font-size: 18px;\n    left: 45%;\n    width: -webkit-fit-content;\n    width: -moz-fit-content;\n    width: fit-content;\n    top: 20%;\n    -webkit-transform: translate(-50%,-50%);\n            transform: translate(-50%,-50%);\n    color: black;\n}\n.info{\n    position: absolute;\n    text-align: center;\n    font-size: 18px;\n    left: 50%;\n    top: 50%;\n    -webkit-transform: translate(-50%,-50%);\n            transform: translate(-50%,-50%);\n    color: white;\n}\n.infoedit{\n    position: absolute;\n    text-align: center;\n    font-size: 18px;\n    left: 50%;\n    top: 50%;\n    -webkit-transform: translate(-50%,-50%);\n            transform: translate(-50%,-50%);\n    color: black;\n}\n\n", ""]);
 
 // exports
 
@@ -37560,208 +37607,331 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c(
-        "form",
-        {
-          on: {
-            submit: function($event) {
-              $event.preventDefault()
-              return _vm.AddToDo($event)
-            }
+  return _c("div", [
+    _c(
+      "form",
+      {
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            return _vm.AddToDo($event)
           }
-        },
-        [
-          _c("input", {
-            directives: [
+        }
+      },
+      [
+        _vm.Hidden
+          ? _c(
+              "div",
               {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.inputtitle,
-                expression: "inputtitle"
-              }
-            ],
-            domProps: { value: _vm.inputtitle },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
+                directives: [{ name: "focus", rawName: "v-focus" }],
+                staticClass: "inputs",
+                on: {
+                  keyup: function($event) {
+                    if (
+                      !$event.type.indexOf("key") &&
+                      _vm._k($event.keyCode, "esc", 27, $event.key, [
+                        "Esc",
+                        "Escape"
+                      ])
+                    ) {
+                      return null
+                    }
+                    return _vm.canceladd(_vm.todo)
+                  }
                 }
-                _vm.inputtitle = $event.target.value
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.inputinfo,
-                expression: "inputinfo"
-              }
-            ],
-            domProps: { value: _vm.inputinfo },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.inputinfo = $event.target.value
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c("button", { attrs: { type: "submit" } }, [_vm._v("Eyo")])
-        ]
-      ),
-      _vm._v(" "),
-      _vm._l(_vm.todos, function(todo) {
-        return _c("ul", { key: todo.id }, [
-          !todo.editing
-            ? _c(
-                "li",
-                {
+              },
+              [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.inputtitle,
+                      expression: "inputtitle"
+                    }
+                  ],
+                  staticClass: "inputtitle",
+                  attrs: { placeholder: "Vul hier uw ToDo in" },
+                  domProps: { value: _vm.inputtitle },
                   on: {
-                    dblclick: function($event) {
-                      return _vm.edittodo(todo)
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.inputtitle = $event.target.value
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.inputinfo,
+                      expression: "inputinfo"
+                    }
+                  ],
+                  staticClass: "inputinfo",
+                  attrs: { placeholder: "Vul hier de beschrijving in" },
+                  domProps: { value: _vm.inputinfo },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.inputinfo = $event.target.value
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "inputimage",
+                  attrs: { type: "file" },
+                  on: { change: _vm.OnImageChange }
+                }),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  { staticClass: "submit", attrs: { type: "submit" } },
+                  [_vm._v("Eyo")]
+                )
+              ]
+            )
+          : _vm._e()
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "boxes" },
+      [
+        _c("h3", { staticClass: "bigtext" }, [_vm._v("ToDo List")]),
+        _vm._v(" "),
+        _c(
+          "h3",
+          {
+            staticClass: "addtodo",
+            on: {
+              click: function($event) {
+                return _vm.AddToDoScreen(_vm.todo)
+              }
+            }
+          },
+          [_vm._v("+")]
+        ),
+        _vm._v(" "),
+        _vm._l(_vm.todos, function(todo) {
+          return _c("ul", { key: todo.id }, [
+            _c("div", { staticClass: "doosjes" }, [
+              _c(
+                "div",
+                {
+                  staticClass: "deletebtn",
+                  on: {
+                    click: function($event) {
+                      return _vm.DeleteToDo(todo)
                     }
                   }
                 },
-                [_vm._v(_vm._s(todo.title))]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          todo.editing
-            ? _c("input", {
+                [_vm._v("×")]
+              ),
+              _vm._v(" "),
+              _c("input", {
                 directives: [
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: todo.title,
-                    expression: "todo.title"
-                  },
-                  { name: "focus", rawName: "v-focus" }
+                    value: todo.completed,
+                    expression: "todo.completed"
+                  }
                 ],
-                domProps: { value: todo.title },
-                on: {
-                  blur: function($event) {
-                    return _vm.doneedit(todo)
-                  },
-                  keyup: [
-                    function($event) {
-                      if (
-                        !$event.type.indexOf("key") &&
-                        _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-                      ) {
-                        return null
-                      }
-                      return _vm.doneedit(todo)
-                    },
-                    function($event) {
-                      if (
-                        !$event.type.indexOf("key") &&
-                        _vm._k($event.keyCode, "esc", 27, $event.key, [
-                          "Esc",
-                          "Escape"
-                        ])
-                      ) {
-                        return null
-                      }
-                      return _vm.canceledit(todo)
-                    }
-                  ],
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(todo, "title", $event.target.value)
-                  }
-                }
-              })
-            : _vm._e(),
-          _vm._v(" "),
-          !todo.editinginfo
-            ? _c(
-                "li",
-                {
-                  on: {
-                    dblclick: function($event) {
-                      return _vm.edittodoinfo(todo)
-                    }
-                  }
+                staticClass: "checkbox",
+                attrs: { type: "checkbox" },
+                domProps: {
+                  checked: Array.isArray(todo.completed)
+                    ? _vm._i(todo.completed, null) > -1
+                    : todo.completed
                 },
-                [_vm._v(_vm._s(todo.info))]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          todo.editinginfo
-            ? _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: todo.info,
-                    expression: "todo.info"
-                  },
-                  { name: "focus", rawName: "v-focus" }
-                ],
-                domProps: { value: todo.info },
                 on: {
-                  blur: function($event) {
-                    return _vm.doneeditinfo(todo)
+                  click: function($event) {
+                    return _vm.CompletedData(todo)
                   },
-                  keyup: [
-                    function($event) {
-                      if (
-                        !$event.type.indexOf("key") &&
-                        _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-                      ) {
-                        return null
+                  change: function($event) {
+                    var $$a = todo.completed,
+                      $$el = $event.target,
+                      $$c = $$el.checked ? true : false
+                    if (Array.isArray($$a)) {
+                      var $$v = null,
+                        $$i = _vm._i($$a, $$v)
+                      if ($$el.checked) {
+                        $$i < 0 &&
+                          _vm.$set(todo, "completed", $$a.concat([$$v]))
+                      } else {
+                        $$i > -1 &&
+                          _vm.$set(
+                            todo,
+                            "completed",
+                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                          )
                       }
-                      return _vm.doneeditinfo(todo)
-                    },
-                    function($event) {
-                      if (
-                        !$event.type.indexOf("key") &&
-                        _vm._k($event.keyCode, "esc", 27, $event.key, [
-                          "Esc",
-                          "Escape"
-                        ])
-                      ) {
-                        return null
-                      }
-                      return _vm.canceleditinfo(todo)
+                    } else {
+                      _vm.$set(todo, "completed", $$c)
                     }
-                  ],
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(todo, "info", $event.target.value)
                   }
                 }
-              })
-            : _vm._e(),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              on: {
-                click: function($event) {
-                  return _vm.DeleteToDo(todo)
-                }
-              }
-            },
-            [_vm._v("×")]
-          )
-        ])
-      })
-    ],
-    2
-  )
+              }),
+              _vm._v(" "),
+              !todo.editing
+                ? _c(
+                    "li",
+                    {
+                      staticClass: "title",
+                      class: { completed: todo.completed },
+                      on: {
+                        dblclick: function($event) {
+                          return _vm.edittodo(todo)
+                        }
+                      }
+                    },
+                    [_vm._v(_vm._s(todo.title))]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              todo.editing
+                ? _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: todo.title,
+                        expression: "todo.title"
+                      },
+                      { name: "focus", rawName: "v-focus" }
+                    ],
+                    staticClass: "titleedit",
+                    domProps: { value: todo.title },
+                    on: {
+                      blur: function($event) {
+                        return _vm.doneedit(todo)
+                      },
+                      keyup: [
+                        function($event) {
+                          if (
+                            !$event.type.indexOf("key") &&
+                            _vm._k(
+                              $event.keyCode,
+                              "enter",
+                              13,
+                              $event.key,
+                              "Enter"
+                            )
+                          ) {
+                            return null
+                          }
+                          return _vm.doneedit(todo)
+                        },
+                        function($event) {
+                          if (
+                            !$event.type.indexOf("key") &&
+                            _vm._k($event.keyCode, "esc", 27, $event.key, [
+                              "Esc",
+                              "Escape"
+                            ])
+                          ) {
+                            return null
+                          }
+                          return _vm.canceledit(todo)
+                        }
+                      ],
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(todo, "title", $event.target.value)
+                      }
+                    }
+                  })
+                : _vm._e(),
+              _vm._v(" "),
+              !todo.editinginfo
+                ? _c(
+                    "li",
+                    {
+                      staticClass: "info",
+                      class: { completed: todo.completed },
+                      on: {
+                        dblclick: function($event) {
+                          return _vm.edittodoinfo(todo)
+                        }
+                      }
+                    },
+                    [_vm._v(_vm._s(todo.info))]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              todo.editinginfo
+                ? _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: todo.info,
+                        expression: "todo.info"
+                      },
+                      { name: "focus", rawName: "v-focus" }
+                    ],
+                    staticClass: "infoedit",
+                    domProps: { value: todo.info },
+                    on: {
+                      blur: function($event) {
+                        return _vm.doneeditinfo(todo)
+                      },
+                      keyup: [
+                        function($event) {
+                          if (
+                            !$event.type.indexOf("key") &&
+                            _vm._k(
+                              $event.keyCode,
+                              "enter",
+                              13,
+                              $event.key,
+                              "Enter"
+                            )
+                          ) {
+                            return null
+                          }
+                          return _vm.doneeditinfo(todo)
+                        },
+                        function($event) {
+                          if (
+                            !$event.type.indexOf("key") &&
+                            _vm._k($event.keyCode, "esc", 27, $event.key, [
+                              "Esc",
+                              "Escape"
+                            ])
+                          ) {
+                            return null
+                          }
+                          return _vm.canceleditinfo(todo)
+                        }
+                      ],
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(todo, "info", $event.target.value)
+                      }
+                    }
+                  })
+                : _vm._e()
+            ])
+          ])
+        })
+      ],
+      2
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true

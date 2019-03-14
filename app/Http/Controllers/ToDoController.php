@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\ToDo;
+use Illuminate\Support\Str;
 
 class ToDoController extends Controller
 {
@@ -35,7 +36,26 @@ class ToDoController extends Controller
      */
     public function store(Request $request)
     {
-        ToDo::create( $request->all());
+
+        $exploded = explode(',' , $request->image);
+        $decoded = base64_decode($exploded[1]);
+
+        if(str::contains($exploded[0], 'jpg')){
+            $extension = 'jpg';
+        }else{
+            $extension = 'png';
+        }
+
+        $filename = str::random().'.'.$extension;
+
+        $path = public_path().'\img'.'/'.$filename;
+
+        file_put_contents($path, $decoded);
+
+
+        ToDo::create( $request->except('image') + [
+            'image' => $filename
+            ]);
 
 
         return(['message' => 'Dit werkt boi']);
