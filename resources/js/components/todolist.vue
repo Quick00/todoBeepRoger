@@ -33,7 +33,7 @@
                 inputtitle: '',
                 Hidden: false,
                 inputinfo: '',
-                image: '',
+                image: false,
                 editing: false,
                 editinginfo: false,
                 completed: 0,
@@ -152,6 +152,7 @@
 
         created(){
             axios.get('./api/todo').then(response => this.todos = response.data)
+
         }
 
 
@@ -189,7 +190,13 @@
     }
 
     .image{
-        
+        position: absolute;
+        background-size: cover;
+        width: 250px;
+        height: 150px;
+        z-index: 0;
+        margin-left: 20px;
+        margin-top: 80px;
     }
 
 
@@ -224,7 +231,7 @@
     .doosjes{
         position: relative;
         width: 500px;
-        height: 150px;
+        height: 250px;
         border-radius: 10px;
         float: left;
         overflow: hidden;
@@ -243,6 +250,8 @@
         outline: none;
         cursor: pointer;
         margin-top: 20px;
+        position: absolute;
+        z-index: 1;
     }
 
     .checkbox:checked {
@@ -313,6 +322,7 @@
         font-size: 15px;
         border-radius: 10px;
 
+
     }
 
     .inputimage{
@@ -356,18 +366,20 @@
         top: 20%;
         left: 50%;
         transform: translate(-50%,-50%);
-        color: white;
+        color: black;
+        z-index: 1;
     }
 
     .titleedit{
-        position: relative;
+        position: absolute;
         text-align: center;
         font-size: 18px;
-        left: 45%;
+        left: 50%;
         width: fit-content;
         top: 20%;
         transform: translate(-50%,-50%);
         color: black;
+        z-index: 1;
     }
 
     .info{
@@ -377,7 +389,8 @@
         left: 50%;
         top: 50%;
         transform: translate(-50%,-50%);
-        color: white;
+        color: black;
+        z-index: 1;
     }
 
     .infoedit{
@@ -388,6 +401,7 @@
         top: 50%;
         transform: translate(-50%,-50%);
         color: black;
+        z-index: 1;
 
     }
 
