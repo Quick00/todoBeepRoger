@@ -5,7 +5,7 @@
                 <input v-model="inputtitle" class="inputtitle" placeholder="Vul hier uw ToDo in">
                 <input v-model="inputinfo" class="inputinfo" placeholder="Vul hier de beschrijving in">
                 <input type="file" class="inputimage" @change="OnImageChange">
-                <button type="submit" class="submit">Eyo</button>
+                <button type="submit" class="submit">Nieuwe ToDo</button>
             </div>
         </form>
     <div class="boxes">
@@ -192,11 +192,11 @@
     .image{
         position: absolute;
         background-size: cover;
-        width: 250px;
-        height: 150px;
+        width: 200px;
+        height: 100px;
         z-index: 0;
         margin-left: 20px;
-        margin-top: 80px;
+        margin-top: 140px;
     }
 
 
