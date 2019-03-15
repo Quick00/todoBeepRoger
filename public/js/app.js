@@ -1830,6 +1830,7 @@ __webpack_require__.r(__webpack_exports__);
     AddToDo: function AddToDo(todo) {
       var _this = this;
 
+      console.log(this.image);
       axios.post('./api/todo', {
         title: this.inputtitle,
         info: this.inputinfo,
@@ -37927,10 +37928,12 @@ var render = function() {
                   })
                 : _vm._e(),
               _vm._v(" "),
-              _c("img", {
-                staticClass: "image",
-                attrs: { src: "./img/" + todo.image }
-              })
+              todo.image
+                ? _c("img", {
+                    staticClass: "image",
+                    attrs: { src: "./img/" + todo.image }
+                  })
+                : _vm._e()
             ])
           ])
         })

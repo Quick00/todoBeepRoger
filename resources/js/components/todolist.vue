@@ -19,7 +19,7 @@
             <input v-model="todo.title" v-if="todo.editing" @blur="doneedit(todo)" @keyup.enter="doneedit(todo)" @keyup.esc="canceledit(todo)"  v-focus class="titleedit">
             <li @dblclick="edittodoinfo(todo)" v-if="!todo.editinginfo" :class="{ completed: todo.completed }" class="info">{{todo.info}}</li>
             <input v-model="todo.info" v-if="todo.editinginfo" @blur="doneeditinfo(todo)" @keyup.enter="doneeditinfo(todo)" @keyup.esc="canceleditinfo(todo)"  v-focus class="infoedit">
-            <img :src="'./img/' + todo.image " class="image">
+            <img :src="'./img/' + todo.image " class="image" v-if="todo.image">
         </div>
     </ul>
     </div>
@@ -76,6 +76,7 @@
             },
 
             AddToDo(todo){
+                console.log(this.image)
                 axios.post('./api/todo', {title: this.inputtitle, info: this.inputinfo, completed: this.completed, editing: this.editing, editinginfo: this.editinginfo, image: this.image})
                 axios.get('./api/todo').then(response => this.todos = response.data)
                 this.inputtitle= ''

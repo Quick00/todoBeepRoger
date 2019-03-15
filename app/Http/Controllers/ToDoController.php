@@ -36,23 +36,27 @@ class ToDoController extends Controller
      */
     public function store(Request $request)
     {
+            if($request->image === false){
+                $filename = null;
+            }else {
 
 
+                $exploded = explode(',', $request->image);
+                $decoded = base64_decode($exploded[1]);
 
-            $exploded = explode(',', $request->image);
-            $decoded = base64_decode($exploded[1]);
+                if (str::contains($exploded[0], 'jpg')) {
+                    $extension = 'jpg';
+                } else {
+                    $extension = 'png';
+                }
 
-            if (str::contains($exploded[0], 'jpg')) {
-                $extension = 'jpg';
-            } else {
-                $extension = 'png';
+                $filename = str::random() . '.' . $extension;
+
+                $path = public_path() . '\img' . '/' . $filename;
+
+                file_put_contents($path, $decoded);
+
             }
-
-            $filename = str::random() . '.' . $extension;
-
-            $path = public_path() . '\img' . '/' . $filename;
-
-            file_put_contents($path, $decoded);
 
 
 
