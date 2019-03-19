@@ -11,7 +11,7 @@
     <div class="boxes">
         <h3 class="bigtext">ToDo List</h3>
         <h3 class="addtodo" @click="AddToDoScreen(todo)">+</h3>
-    <ul v-for="todo in todos" :key="todo.id" >
+        <ul v-for="todo in todos" :key="todo.id" >
         <div class="doosjes">
             <div @click="DeleteToDo(todo)" class="deletebtn">&times</div>
             <input type="checkbox" class="checkbox" v-model="todo.completed" @click="CompletedData(todo)" >
@@ -77,7 +77,7 @@
 
             AddToDo(todo){
                 console.log(this.image)
-                axios.post('./api/todo', {title: this.inputtitle, info: this.inputinfo, completed: this.completed, editing: this.editing, editinginfo: this.editinginfo, image: this.image})
+                axios.post('./api/todo', {ID: this.ID, title: this.inputtitle, info: this.inputinfo, completed: this.completed, editing: this.editing, editinginfo: this.editinginfo, image: this.image})
                 axios.get('./api/todo').then(response => this.todos = response.data)
                 this.inputtitle= ''
                 this.inputinfo= ''

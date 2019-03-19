@@ -13,16 +13,18 @@ class TodoList extends Migration
      */
     public function up()
     {
-        ToDO::create('to_dos', function (Blueprint $table) {
-            $table->bigint('ID')->index();
-            $table->string('title')
+        Schema::create('to_dos', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('title');
             $table->text('info');
             $table->boolean('completed');
             $table->longText('image')->nullable();
             $table->boolean('editing');
             $table->boolean('editinginfo');
             $table->timestamp('created_at')->nullable();
+            $table->timestamp('updated_at')->nullable();
         });
+
     }
 
     /**
